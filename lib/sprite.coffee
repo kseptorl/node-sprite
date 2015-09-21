@@ -3,6 +3,7 @@ im = require "imagemagick"
 watch = require 'watch'
 Seq = require "seq"
 checksum = require './checksum'
+_ = require 'lodash'
 { EventEmitter } = require "events"
 
 Image = require './image'
@@ -103,6 +104,9 @@ class Sprite extends EventEmitter
 
   _getFiles: (cb) ->
     fs.readdir "#{@path}/#{@name}", (err, files) ->
+
+      files = _.sortBy files, (path) -> return parseInt path.match /\d+/g
+
       files = files.filter (file) -> file.match /\.(png|gif|jpg|jpeg)$/
       cb err, files
 
